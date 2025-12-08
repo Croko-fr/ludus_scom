@@ -37,6 +37,7 @@ ludus range deploy
 ```
 
 ## "Network" Diagrams
-<img width="2455" height="1125" alt="image" src="https://github.com/user-attachments/assets/6397a62a-c760-4327-8204-1c37e0253c25" />
+<img width="2455" height="1125" alt="image" src="https://github.com/user-attachments/assets/07d99682-f790-4933-b0de-dcb5e9e61c55" />
+
 
 **Diagrams from "Getting Started with Microsoft System Center Operations Manager" by Kevin Greene*
