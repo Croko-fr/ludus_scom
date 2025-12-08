@@ -1,0 +1,86 @@
+ludus:
+  - vm_name: "{{ range_id }}-DC01"
+    hostname: "DC01"
+    template: win2022-server-x64-template
+    vlan: 10
+    ip_last_octet: 10
+    ram_gb: 4
+    ram_min_gb: 1
+    cpus: 2
+    windows:
+      sysprep: true
+    domain:
+      fqdn: ludus.domain
+      role: primary-dc
+    roles:
+      - synzack.ludus_scom.disable_firewall
+      - synzack.ludus_scom.create_scom_accounts
+
+  - vm_name: "{{ range_id }}-scom-om1"
+    hostname: "scom-om1"
+    template: win2022-server-x64-template
+    vlan: 10
+    ip_last_octet: 30
+    ram_gb: 6
+    ram_min_gb: 1
+    cpus: 4
+    windows:
+      sysprep: true
+    domain:
+      fqdn: ludus.domain
+      role: member
+    roles:
+      - synzack.ludus_scom.disable_firewall
+      - synzack.ludus_scom.install_db
+      - synzack.ludus_scom.install_omserver
+      - synzack.ludus_scom.install_omwebconsole
+      - synzack.ludus_scom.install_omconsole
+      - synzack.ludus_scom.install_omreporting
+      - synzack.ludus_scom.deploy_agents
+    role_vars:
+      # Server Role Vars
+      scom_db_server: scom-om1
+      scom_dw_server: scom-om1
+      scom_management_server: scom-om1   
+      # OMServer Install Vars
+      scom_omserver_enable_error_reporting: Never           # [Never|Queued|Always]
+      scom_omserver_send_ceip_reports: 0                    # [0|1]
+      scom_omserver_use_microsoft_update: 0                 # [0|1]
+      # OMConsole Install Vars
+      scom_omconsole_enable_error_reporting: Never          # [Never|Queued|Always]
+      scom_omconsole_send_ceip_reports: 0                   # [0|1]
+      scom_omconsole_use_microsoft_update: 0                # [0|1]
+      # OMWebConsole Install Vars
+      scom_omwebconsole_authorization_mode: Mixed           # [Mixed|Network]
+      scom_omwebconsole_enable_error_reporting: Never       # [Never|Queued|Always]
+      scom_omwebconsole_send_ceip_reports: 0                # [0|1]
+      scom_omwebconsole_use_microsoft_update: 0             # [0|1]  
+      # OMReporting Install Vars
+      scom_management_server: scom-om1   
+      scom_omreporting_send_odr_reports: 0      # [0|1]
+      scom_omreporting_use_microsoft_update: 0  # [0|1]
+      # Deploy Agent Vars
+      scom_push_install_account: opsmgr_push    #default opsmgr_action, if specified user does not exist, it will be created
+      scom_push_install_password: Password123
+      scom_deploy_agent_hostnames:
+        - dc01.ludus.domain
+
+global_role_vars:
+  # SCOM Config
+  scom_management_group_name: SCOM1
+  # Admin Group
+  scom_admin_group: SCOMAdmins
+  # Accounts
+  scom_action_account_username: opsmgr_action   # will not be used if scom_omserver_user_local_system_action_account: true
+  scom_action_account_password: Password123     # will not be used if scom_omserver_user_local_system_action_account: true
+  scom_data_access_account: opsmgr_das          # will not be used if scom_use_local_system_das_account: true
+  scom_data_access_password: Password123        # will not be used if scom_use_local_system_das_account: true
+  scom_reader_account: opsmgr_dataread
+  scom_reader_password: Password123
+  scom_writer_account: opsmgr_datawrite
+  scom_writer_password: Password123
+  scom_sql_account: opsmgr_sqlsvc
+  scom_sql_password: Password123
+  # OMServer Local Account Usage - Set as Global Var in Event of Additional Servers 
+  scom_omserver_use_local_system_action_account: false
+  scom_omserver_use_local_system_das_account: true
