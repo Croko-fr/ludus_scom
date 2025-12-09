@@ -27,7 +27,7 @@ None
 
 ## Building the Collection from Source
 ```
-git clone https://github.com/SpecterOps/ludus_scom
+git clone https://github.com/synzack/ludus_scom
 cd ludus_scom
 ansible-galaxy collection build
 python3 -m http.server 80
