@@ -56,7 +56,7 @@ ludus:
       scom_omwebconsole_send_ceip_reports: 0                # [0|1]
       scom_omwebconsole_use_microsoft_update: 0             # [0|1]  
       # OMReporting Install Vars
-      scom_management_server: scom-om1   
+      # scom_management_server: scom-om1   
       scom_omreporting_send_odr_reports: 0      # [0|1]
       scom_omreporting_use_microsoft_update: 0  # [0|1]
       # Deploy Agent Vars
